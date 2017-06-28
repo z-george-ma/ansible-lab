@@ -1,0 +1,7 @@
+---
+- name: setup melprdinfra01
+  hosts: target
+  become: yes
+
+  roles:
+    - site24x7

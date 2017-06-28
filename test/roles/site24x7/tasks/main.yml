@@ -1,0 +1,26 @@
+---
+
+- name: install site24x7
+  shell: |
+    wget https://staticdownloads.site24x7.com/probe/Site24x7OnPremisePoller_64bit.bin && \
+    chmod 755 Site24x7OnPremisePoller_64bit.bin && \
+    ./Site24x7OnPremisePoller_64bit.bin -silent && \
+    rm -f ./Site24x7OnPremisePoller_64bit.bin
+  args:
+    chdir: /tmp
+    creates: /opt/Site24x7OnPremisePoller
+
+- name: copy install.txt
+  template: src=install.txt.j2 dest=/opt/Site24x7OnPremisePoller/conf/install.txt owner=root group=root mode=0644
+
+- name: copy daemon
+  copy: src=site24x7 dest=/etc/init.d/site24x7 owner=root group=root mode=0700
+
+- name: install daemon
+  shell: |
+    update-rc.d site24x7 defaults
+    update-rc.d site24x7 enable
+    echo "192.168.1.36 internal-sf-apis.liberty.com.au" >> /etc/hosts 
+    echo "192.168.1.35 internal-sf-web.liberty.com.au" >> /etc/hosts
+  args:
+    creates: /etc/rc3.d/S01site24x7
