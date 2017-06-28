@@ -1,0 +1,1 @@
+docker run --rm -it -p 2222:22 --name target ansible-target-ubuntu

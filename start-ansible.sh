@@ -1,0 +1,1 @@
+cd playbook && docker run --rm -it -v `pwd`:/app --link target ansible ansible-playbook -v -b /app/site.yml
